@@ -11,11 +11,8 @@ class Person extends Model
     
     protected $fillable = [
         'contact_person',
-        'email',
-        'phone',
-        'address',
+        'company_id',
         'user_id',
-        'post_id'
     ];
 
     public function user()
@@ -23,8 +20,8 @@ class Person extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function post()
+    public function company()
     {
-        return $this->belongsTo(Post::class);
+        return $this->belongsTo(Company::class);
     }
 }

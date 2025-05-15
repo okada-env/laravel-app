@@ -18,7 +18,7 @@
                 @endif
                 <form method="post" action="{{route('person.store')}}">
                     @csrf
-                    <input type="hidden" name="post_id" value="{{ request('company_id') }}">
+                    <input type="hidden" name="company_id" value="{{ request('company_id') }}">
                     <div class="form-group">
                         <label for="contact_person">担当者名</label>
                         <input type="text" name="contact_person" class="form-control" id="contact_person" value="{{old('contact_person')}}" required>

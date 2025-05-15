@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Post;
+use App\Models\Company;
 
 class HomeController extends Controller
 {
@@ -25,14 +25,14 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $keyword = $request->input('keyword');
-        $query = Post::query();
+        $query = Company::query();
 
         if(!empty($keyword)) {
             $query->where('title', 'LIKE', "%{$keyword}%");
         }
 
-        $posts = $query->orderBy('created_at', 'desc')->get();
+        $companies = $query->orderBy('created_at', 'desc')->get();
 
-        return view('home', compact('posts', 'keyword'));
+        return view('home', compact('companies', 'keyword'));
     }
 }

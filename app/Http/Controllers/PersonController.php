@@ -22,16 +22,16 @@ class PersonController extends Controller
     {
         $request->validate([
             'contact_person' => 'required|string|max:255',
-            'post_id' => 'required|exists:posts,id'
+            'company_id' => 'required|exists:companies,id'
         ]);
 
         $person = new Person();
         $person->contact_person = $request->contact_person;
         $person->user_id = auth()->user()->id;
-        $person->post_id = $request->post_id;
+        $person->company_id = $request->company_id;
         $person->save();
 
-        return redirect()->route('post.show', ['post' => $request->post_id])
+        return redirect()->route('companies.show', ['company' => $request->company_id])
             ->with('message', '担当者を作成しました');
     }
 

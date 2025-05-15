@@ -18,6 +18,8 @@ return new class extends Migration
             // $table->string('phone')->nullable();
             // $table->text('address')->nullable();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('company_id');
+            $table->foreign('company_id')->references('id')->on('companies');
             $table->timestamps();
         });
     }

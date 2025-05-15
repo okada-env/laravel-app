@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            // $table->text('body');
-            // $table->text('image')->nullable();
+            $table->text('body')->nullable();
+            $table->string('contact_person')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('company_id')->nullable(); // ← afterを削除
             $table->timestamps();
         });
     }

@@ -12,14 +12,14 @@
   </form>
 </div>
 
-@foreach ($posts as $post)
+@foreach ($companies as $company )
 <div class="container-fluid mt-20" style="margin-left:-10px;">
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-4">
                 <div class="card-header">
                     <div class="media flex-wrap w-100 align-items-center">
-                        <div class="media-body ml-3">企業名:<a href="{{route('post.show', $post)}}">{{ $post->title }}</a>
+                        <div class="media-body ml-3">企業名:<a href="{{route('companies.show', $company)}}">{{ $company->title }}</a>
                             {{-- <div class="text-muted small">住所：<a href="{{route('post.show', $post)}}">{{ $post->body }}</div> --}}
                         </div>
                     </div>
