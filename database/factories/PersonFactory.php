@@ -15,10 +15,12 @@ class PersonFactory extends Factory
      */
     public function definition()
     {
+        static $companyIds = null;
+        
         return [
             'contact_person' => $this->faker->name(),
             'user_id' => $this->faker->numberBetween(1, 10),
-            'company_id' => Company::inRandomOrder()->first()->id,
+            'company_id' => $this->faker->randomElement($companyIds),
         ];
     }
 }
