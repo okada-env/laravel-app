@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\Person;
 use App\Models\Company;
+use App\Models\Project;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class PersonFactory extends Factory
+class ProjectFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -16,15 +16,21 @@ class PersonFactory extends Factory
     public function definition()
     {
         static $companyIds = null;
+        static $userIds = null;
         
         if ($companyIds === null) {
             $companyIds = Company::pluck('id')->toArray();
         }
         
+        if ($userIds === null) {
+            $userIds = \App\Models\User::pluck('id')->toArray();
+        }
+        
         return [
-            'contact_person' => $this->faker->name(),
-            'user_id' => $this->faker->numberBetween(1, 10),
+            'title' => $this->faker->company(),
+            'contact_project' => $this->faker->name(),
             'company_id' => $this->faker->randomElement($companyIds),
+            'user_id' => $this->faker->randomElement($userIds),
         ];
     }
 }

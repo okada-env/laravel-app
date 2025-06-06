@@ -22,7 +22,7 @@ class PersonController extends Controller
     {
         $request->validate([
             'contact_person' => 'required|string|max:255',
-            'company_id' => 'required|exists:companies,id'
+            'company_id' => 'required|exists:companies,id',
         ]);
 
         $person = new Person();
@@ -43,7 +43,10 @@ class PersonController extends Controller
     
     public function show(Person $person)
     {
-        return view('person.person_show', compact('person'));
+        $projects = $person->projects; 
+        $company = $person->company; 
+        return view('person.show', compact('company','person', 'projects'));
+
     }
     
     public function edit(Person $person)
@@ -67,5 +70,11 @@ class PersonController extends Controller
     {        
         $person->delete();
         return back()->with('message', '担当者情報を削除しました');
+    }
+
+    public function projects()
+    {
+    return $this->belongsToMany(Project::class, 'person_project')
+                ->withPivot('company_id');
     }
 }

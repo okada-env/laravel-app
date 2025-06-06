@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-md-10 mt-6">
             <div class="card-body">
-                <h1 class="mt4">登録編集</h1>
+                <h1 class="mt4">案件編集</h1>
                 @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -16,18 +16,17 @@
                 @if (session('message'))
                 <div class="alert alert-success">{{session('message')}}</div>
                 @endif
-                <form method="post" action="{{route('companies.update', $company)}}" enctype="multipart/form-data">
+                <form method="post" action="{{route('companies.projects.update', [$company, $project])}}">
                     @csrf
                     @method('put')
                     <div class="form-group">
-                        <label for="title">企業名</label>
-                        <input type="text" name="title" class="form-control" 
-                        value="{{old('title', $company->title)}}" id="title" placeholder="Enter Title">
+                        <label for="contact_project">案件名</label>
+                        <input type="text" name="contact_project" class="form-control" id="contact_project" 
+                        value="{{old('contact_project', $project->contact_project)}}" required>
                     </div>
-
-                    <button type="submit" class="btn btn-success">送信する </button>
+                    <button type="submit" class="btn btn-success">更新する</button>
                 </form>
             </div>
         </div>
     </div>
-@endsection
+@endsection 

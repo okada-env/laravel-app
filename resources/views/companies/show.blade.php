@@ -28,7 +28,7 @@
             <ul class="list-group mb-4">
                 @foreach($people as $person)
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{ $person->contact_person }}
+                        <div class="media-body ml-3">担当者:<a href="{{route('person.show', $person)}}">{{ $person->contact_person }}</div>
                         <div>
                             <a href="{{ route('person.edit', $person) }}" class="btn btn-primary btn-sm">編集</a>
                             <form method="post" action="{{ route('person.destroy', $person) }}" class="d-inline">
@@ -59,6 +59,37 @@
                 </div>
                 <button type="submit" class="btn btn-primary">登録</button>
             </form>
+        @endif
+        <div class="card-footer">
+            <span class="ml-auto">
+                <a href="{{ route('companies.projects.create', $company) }}"><button class="btn btn-primary">案件を登録</button></a>
+            </span>
+        </div>
+
+        <h5 class="mt-4">案件一覧</h5>
+        @if($projects && $projects->count() > 0)
+            <ul class="list-group mb-4">
+                @foreach($projects as $project)
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            {{ $project->contact_project }}
+                            @if($project->persons->count() > 0)
+                                <div class="media-body ml-3">担当者:{{ $project->persons->pluck('contact_person')->join(', ') }}</a>
+                            @endif
+                        </div>
+                        <div>
+                            <a href="{{ route('companies.projects.edit', [$company, $project]) }}" class="btn btn-primary btn-sm">編集</a>
+                            <form method="post" action="{{ route('companies.projects.destroy', [$company, $project]) }}" class="d-inline">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-danger btn-sm" onClick="return confirm('本当に削除しますか？');">削除</button>
+                            </form>
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+        @else
+            <p>案件が登録されていません。</p>
         @endif
     </div>
     <div class="card-footer">

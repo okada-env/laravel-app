@@ -53,4 +53,9 @@ class User extends Authenticatable
     public function people() {
         return $this->hasMany('App\Models\Person');
     }
+
+    public function projects()
+    {
+    return $this->belongsToMany(Project::class);
+    }
 }

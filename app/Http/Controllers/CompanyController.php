@@ -53,8 +53,9 @@ class CompanyController extends Controller
         }
 
         $people = $peopleQuery->get();
+        $projects = $company->projects;
 
-        return view('companies.show', compact('company', 'people'));
+        return view('companies.show', compact('company', 'people', 'projects'));
     }
     
     public function edit(Company $company)

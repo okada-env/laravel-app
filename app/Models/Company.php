@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Company extends Model
 {
@@ -26,5 +27,10 @@ class Company extends Model
     public function people()
     {
         return $this->hasMany(\App\Models\Person::class, 'company_id');
+    }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
     }
 }
