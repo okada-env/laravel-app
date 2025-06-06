@@ -18,7 +18,7 @@ class ProjectTableSeeder extends Seeder
     {
         \App\Models\Company::all()->each(function ($company) {
             $count = rand(1, 3);
-            Project::factory()->count($count)->create([
+            $projects = Project::factory()->count($count)->create([
                 'company_id' => $company->id
             ]);
 
