@@ -4,7 +4,6 @@
 <div class="card mb-4">
     <div class="card-header">
         <div class="text-muted small mr-3"> 
-            {{$person->user->name}}
         </div>
         <div class="d-flex justify-content-between align-items-center">
             <h4 class="mb-0">担当者名【{{$person->contact_person}}】</h4>

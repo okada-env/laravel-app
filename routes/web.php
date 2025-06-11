@@ -16,6 +16,8 @@ Route::get('/debug-db', function () {
     return config('database.connections.mysql.host');
 });
 
+Route::get('/status/create', [StatusController::class, 'create'])->name('status.create');
+
 Route::resource('person', PersonController::class);
 Auth::routes();
 

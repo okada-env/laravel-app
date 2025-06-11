@@ -28,7 +28,11 @@ class ProjectFactory extends Factory
         
         return [
             'title' => $this->faker->company(),
-            'contact_project' => $this->faker->name(),
+            'contact_project' => $this->faker->randomElement([
+                'Pカレ',
+                'コンサル',
+                'スマロボ'
+            ]),
             'company_id' => $this->faker->randomElement($companyIds),
             'user_id' => $this->faker->randomElement($userIds),
         ];

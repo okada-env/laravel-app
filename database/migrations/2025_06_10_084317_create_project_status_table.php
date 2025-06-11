@@ -1,4 +1,4 @@
-<!-- <?php
+<?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('company_project', function (Blueprint $table) {
+        Schema::create('project_status', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('person_id')->constrained()->onDelete('cascade');
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
             $table->foreignId('company_id')->constrained()->onDelete('cascade');
             $table->foreignId('status_id')->constrained()->onDelete('cascade');
             $table->timestamps();
-
         });
     }
 
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('company_project');
+        Schema::dropIfExists('project_status');
     }
 };

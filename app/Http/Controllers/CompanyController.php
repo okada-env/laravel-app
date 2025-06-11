@@ -53,7 +53,12 @@ class CompanyController extends Controller
         }
 
         $people = $peopleQuery->get();
-        $projects = $company->projects;
+        $projects = $company->projects()
+            ->with(['persons', 'companies' => function($query) use ($company) {
+                $query->where('companies.id', $company->id)
+                      ->withPivot('status_id', 'person_id');
+            }])
+            ->get();
 
         return view('companies.show', compact('company', 'people', 'projects'));
     }

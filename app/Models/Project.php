@@ -12,7 +12,18 @@ class Project extends Model
     protected $fillable = [
         'title',
         'company_id',
-        'contact_project'
+        'contact_project',
+        'project_id'
+    ];
+
+    const PROJECT_TYPE_P_CARE = 'Pカレ';
+    const PROJECT_TYPE_CONSULTING = 'コンサル';
+    const PROJECT_TYPE_SMART_ROBOT = 'スマロボ';
+
+    public static $projectTypes = [
+        self::PROJECT_TYPE_P_CARE => 'Pカレ',
+        self::PROJECT_TYPE_CONSULTING => 'コンサル',
+        self::PROJECT_TYPE_SMART_ROBOT => 'スマロボ'
     ];
 
     public function companies(): BelongsToMany
@@ -25,14 +36,18 @@ class Project extends Model
         return $this->belongsToMany(User::class);
     }
 
-    // public function company()
-    // {
-    //     return $this->belongsTo(Company::class);
-    // }
 
     public function persons()
     {
         return $this->belongsToMany(Person::class, 'person_project')
-                    ->withPivot('company_id');
+                    ->withPivot('company_id')
+                    ->withTimestamps();
+    }
+
+    public function status()
+    {
+        return $this->belongsToMany(Status::class, 'company_project')
+                    ->withPivot('company_id')
+                    ->withTimestamps();
     }
 }

@@ -72,10 +72,23 @@
                 @foreach($projects as $project)
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         <div>
-                            {{ $project->contact_project }}
+                            案件名：{{ $project->contact_project }}
+                            <div class="media-body ml-3">
+                                進捗:
+                                @php
+                                    $statusMap = [
+                                        1 => '進行中',
+                                        2 => '受注',
+                                        3 => '失注'
+                                    ];
+                                    $currentStatusId = $project->companies->first()?->pivot?->status_id;
+                                @endphp
+                                {{ isset($currentStatusId) ? $statusMap[$currentStatusId] : '未設定' }}
+                            </div>
                             @if($project->persons->count() > 0)
-                                <div class="media-body ml-3">担当者:{{ $project->persons->pluck('contact_person')->join(', ') }}</a>
+                                <div class="media-body ml-3">担当者: {{ $project->persons->pluck('contact_person')->join(', ') }}</div>
                             @endif
+                            {{-- {{ $project->status ? $project->status->pluck('status')->join(', ')  }} --}}
                         </div>
                         <div>
                             <a href="{{ route('companies.projects.edit', [$company, $project]) }}" class="btn btn-primary btn-sm">編集</a>

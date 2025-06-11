@@ -21,7 +21,21 @@
                     <input type="hidden" name="company_id" value="{{ $company->id }}">
                     <div class="form-group">
                         <label for="contact_project">案件</label>
-                        <input type="text" name="contact_project" class="form-control" id="contact_project" value="{{ old('contact_project') }}" required>
+                        <select name="contact_project" class="form-control" id="contact_project" required>
+                            <option value="">選択してください</option>
+                            @foreach(App\Models\Project::$projectTypes as $key => $value)
+                                <option value="{{ $key }}">{{ $value }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="status_id">進捗状況</label>
+                        <select name="status_id" class="form-control" id="status" required>
+                            <option value="">選択してください</option>
+                            @foreach($statuses as $key => $value)
+                                <option value="{{ $key }}">{{ $value }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="person_id">担当者</label>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\Company;
 use App\Models\Person;
+use App\Models\Status;
 
 class ProjectController extends Controller
 {
@@ -17,8 +18,12 @@ class ProjectController extends Controller
     public function create(Company $company)
     {
         $persons = Person::where('company_id', $company->id)->get();
-        return view('projects.project_create', compact('company','persons'));
-
+        $statuses = [
+            1 => '進行中',
+            2 => '受注',
+            3 => '失注'
+        ];
+        return view('projects.project_create', compact('company', 'persons', 'statuses'));
     }
     
     public function store(Request $request)
@@ -27,7 +32,7 @@ class ProjectController extends Controller
             'contact_project' => 'required|string|max:255',
             'company_id' => 'required|exists:companies,id',
             'person_id' => 'required|exists:people,id',
-
+            'status_id' => 'required|in:1,2,3', 
         ]);
 
         $project = new Project();
@@ -35,16 +40,17 @@ class ProjectController extends Controller
         $project->user_id = auth()->user()->id;
         $project->company_id = $request->company_id;
         $project->save();
-        $project->companies()->attach($request->company_id, ['person_id' => $request->person_id]);
 
-        $company = Company::find($validated['company_id']);
-
+        $project->companies()->attach($request->company_id, [
+            'person_id' => $request->person_id,
+            'status_id' => $request->status_id
+        ]);
 
         $person = Person::find($validated['person_id']);
         $person->projects()->attach($project->id, [
-            'company_id' => $company->id,
+            'company_id' => $request->company_id,
+            'status_id' => $request->status_id
         ]);
-        
 
         return redirect()->route('companies.show', ['company' => $request->company_id])
             ->with('message', '案件を作成しました');
@@ -63,17 +69,40 @@ class ProjectController extends Controller
     
     public function edit(Company $company, Project $project)
     {
-        return view('projects.project_edit', compact('company','project'));
+        $project->load(['companies' => function($query) use ($company) {
+            $query->where('companies.id', $company->id)
+                  ->withPivot('person_id');
+        }]);
+        $persons = Person::where('company_id', $company->id)->get();
+        $statuses = [
+            1 => '進行中',
+            2 => '受注',
+            3 => '失注'
+        ];
+        return view('projects.project_edit', compact('company', 'project', 'persons', 'statuses'));
     }
     
-    public function update(Request $request,Company $company, Project $project)
+    public function update(Request $request, Company $company, Project $project)
     {  
         $inputs = $request->validate([
             'contact_project' => 'required|max:255',
+            'person_id' => 'required|exists:people,id',
+            'status_id' => 'required|in:1,2,3',
         ]);
 
         $project->contact_project = $inputs['contact_project'];
         $project->save();
+
+        $project->companies()->updateExistingPivot($company->id, [
+            'person_id' => $inputs['person_id'],
+            'status_id' => $inputs['status_id']
+        ]);
+
+        $person = Person::find($inputs['person_id']);
+        $person->projects()->updateExistingPivot($project->id, [
+            'company_id' => $company->id,
+            'status_id' => $inputs['status_id']
+        ]);
 
         return back()->with('message', '案件情報を更新しました');
     }
