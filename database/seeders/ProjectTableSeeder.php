@@ -33,7 +33,8 @@ class ProjectTableSeeder extends Seeder
                 if ($person && $status) {
                     $person->projects()->attach($project->id, [
                         'company_id' => $company->id,
-                        'status_id' => $status->id
+                        'status_id' => $status->id,
+                        'person_id' => $person->id,
                     ]);
                 }
             }

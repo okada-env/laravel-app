@@ -8,41 +8,35 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Status extends Model
 {
-
     use HasFactory;
+    
     protected $fillable = [
         'status',
     ];
 
-    public function companies(): BelongsToMany
+    // ステータスの定数定義
+    const STATUS_IN_PROGRESS = '進行中';
+    const STATUS_ACCEPTED = '受注';
+    const STATUS_LOST = '失注';
+
+    // 利用可能なステータス一覧
+    public static $availableStatuses = [
+        self::STATUS_IN_PROGRESS => '進行中',
+        self::STATUS_ACCEPTED => '受注',
+        self::STATUS_LOST => '失注',
+    ];
+
+    public function projects(): BelongsToMany
     {
-        return $this->belongsToMany(Company::class, 'company_project');
+        return $this->belongsToMany(Project::class, 'person_project')
+                    ->withPivot('company_id', 'person_id')
+                    ->withTimestamps();
     }
 
-    public function user(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class);
-    }
-
-    public function project(): BelongsToMany
-    {
-        return $this->belongsToMany(project::class);
-    }
-
-
-    public function persons()
+    public function persons(): BelongsToMany
     {
         return $this->belongsToMany(Person::class, 'person_project')
-                    ->withPivot('company_id');
+                    ->withPivot('company_id', 'project_id')
+                    ->withTimestamps();
     }
-    
-    const STATUS_ACTIVE = 'active';
-    const STATUS_CONTRACT = 'contract';
-    const STATUS_CANCELLED = 'cancelled';
-
-    public static $statuses = [
-        'active' => '進行中',
-        'contract' => '受注',
-        'cancelled' => '失注'
-    ];
 }

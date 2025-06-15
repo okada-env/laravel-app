@@ -35,7 +35,8 @@
                         <select name="status_id" class="form-control" id="status" required>
                             <option value="">選択してください</option>
                             @php
-                                $currentStatusId = $project->companies->first()?->pivot?->status_id;
+                                $person = $project->persons->first();
+                                $currentStatusId = $person ? $person->pivot->status_id : null;
                             @endphp
                             @foreach($statuses as $key => $value)
                                 <option value="{{ $key }}" {{ $currentStatusId == $key ? 'selected' : '' }}>
@@ -49,7 +50,8 @@
                         <select name="person_id" class="form-control" id="person_id" required>
                             <option value="">選択してください</option>
                             @php
-                                $currentPersonId = $project->companies->first()?->pivot?->person_id;
+                                $person = $project->persons->first();
+                                $currentPersonId = $person ? $person->id : null;
                             @endphp
                             @foreach($persons as $person)
                                 <option value="{{ $person->id }}" {{ $currentPersonId == $person->id ? 'selected' : '' }}>

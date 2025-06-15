@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Company;
+use App\Models\Status;
 
 
 class CompanyController extends Controller
@@ -54,13 +55,14 @@ class CompanyController extends Controller
 
         $people = $peopleQuery->get();
         $projects = $company->projects()
-            ->with(['persons', 'companies' => function($query) use ($company) {
-                $query->where('companies.id', $company->id)
-                      ->withPivot('status_id', 'person_id');
+            ->with(['persons' => function($query) {
+                $query->withPivot('status_id');
             }])
             ->get();
 
-        return view('companies.show', compact('company', 'people', 'projects'));
+        $statuses = Status::all()->pluck('status', 'id');
+
+        return view('companies.show', compact('company', 'people', 'projects', 'statuses'));
     }
     
     public function edit(Company $company)

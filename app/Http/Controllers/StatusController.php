@@ -24,7 +24,7 @@ class StatusController extends Controller
     
     public function create(Request $request)
     {
-        $statuses = Status::$statuses;
+        $statuses = Status::all();
         $company = null;
         $persons = collect();
         if ($request->has('company_id')) {
@@ -34,18 +34,17 @@ class StatusController extends Controller
         return view('projects.project_create', compact('company', 'persons', 'statuses'));
     }
 
-    
-    public function update(Request $request,Project $project, Status $status)
+    public function update(Request $request, Project $project)
     {  
         $inputs = $request->validate([
-            'status_id' => 'required|max:255',
+            'status_id' => 'required|exists:statuses,id',
         ]);
 
-        $status->status_id = $inputs['status_id'];
-        $status->save();
+        $project->companies()->updateExistingPivot(
+            $request->company_id,
+            ['status_id' => $inputs['status_id']]
+        );
 
         return back()->with('message', '進捗状況を更新しました');
     }
-    
-
 }

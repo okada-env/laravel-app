@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Project extends Model
 {
@@ -26,28 +27,27 @@ class Project extends Model
         self::PROJECT_TYPE_SMART_ROBOT => 'スマロボ'
     ];
 
-    public function companies(): BelongsToMany
+    public function company(): BelongsTo
     {
-        return $this->belongsToMany(Company::class, 'company_project');
+        return $this->belongsTo(Company::class);
     }
 
-    public function user(): BelongsToMany
+    public function user(): BelongsTo
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(User::class);
     }
 
-
-    public function persons()
+    public function persons(): BelongsToMany
     {
         return $this->belongsToMany(Person::class, 'person_project')
-                    ->withPivot('company_id')
+                    ->withPivot('status_id')
                     ->withTimestamps();
     }
 
-    public function status()
+    public function status(): BelongsToMany
     {
-        return $this->belongsToMany(Status::class, 'company_project')
-                    ->withPivot('company_id')
+        return $this->belongsToMany(Status::class, 'person_project', 'project_id', 'status_id')
+                    ->withPivot('company_id', 'person_id')
                     ->withTimestamps();
     }
 }
