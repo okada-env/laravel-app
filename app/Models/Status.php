@@ -26,17 +26,4 @@ class Status extends Model
         self::STATUS_LOST => '失注',
     ];
 
-    public function projects(): BelongsToMany
-    {
-        return $this->belongsToMany(Project::class, 'person_project')
-                    ->withPivot('company_id', 'person_id')
-                    ->withTimestamps();
-    }
-
-    public function persons(): BelongsToMany
-    {
-        return $this->belongsToMany(Person::class, 'person_project')
-                    ->withPivot('company_id', 'project_id')
-                    ->withTimestamps();
-    }
 }

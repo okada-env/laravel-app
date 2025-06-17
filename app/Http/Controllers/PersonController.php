@@ -43,10 +43,9 @@ class PersonController extends Controller
     
     public function show(Person $person)
     {
-        $projects = $person->projects; 
+        $pivots = $person->pivots()->with(['project', 'status'])->get();
         $company = $person->company; 
-        return view('person.show', compact('company','person', 'projects'));
-
+        return view('person.show', compact('company','person', 'pivots'));
     }
     
     public function edit(Person $person)
@@ -72,9 +71,4 @@ class PersonController extends Controller
         return back()->with('message', '担当者情報を削除しました');
     }
 
-    public function projects()
-    {
-    return $this->belongsToMany(Project::class, 'person_project')
-                ->withPivot('company_id');
-    }
 }

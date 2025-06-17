@@ -28,7 +28,7 @@
             <ul class="list-group mb-4">
                 @foreach($people as $person)
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <div class="media-body ml-3">担当者:<a href="{{route('person.show', $person)}}">{{ $person->contact_person }}</div>
+                        <div class="media-body ml-3">担当者:{{ $person->contact_person }}</div>
                         <div>
                             <a href="{{ route('person.edit', $person) }}" class="btn btn-primary btn-sm">編集</a>
                             <form method="post" action="{{ route('person.destroy', $person) }}" class="d-inline">
@@ -73,12 +73,14 @@
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         <div>
                             案件名：{{ $project->contact_project }}
-                            <div class="media-body ml-3">
-                                進捗: {{ $statuses[$project->persons->first()?->pivot?->status_id] ?? '未設定' }}
-                            </div>
-                            @if($project->persons->count() > 0)
-                                <div class="media-body ml-3">担当者: {{ $project->persons->pluck('contact_person')->join(', ') }}</div>
-                            @endif
+                            @foreach($project->people as $person)
+                                <div class="media-body ml-3">
+                                    担当者: {{ $person->contact_person }}
+                                </div>
+                                <div class="media-body ml-3">    
+                                    進捗: {{ $statuses[$person->pivot->status_id] ?? '未設定' }}
+                                </div>
+                            @endforeach
                         </div>
                         <div>
                             <a href="{{ route('companies.projects.edit', [$company, $project]) }}" class="btn btn-primary btn-sm">編集</a>

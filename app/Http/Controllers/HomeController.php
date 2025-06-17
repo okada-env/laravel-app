@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Company;
+use App\Models\Person;
+use App\Models\Project;
 
 class HomeController extends Controller
 {
@@ -31,7 +33,7 @@ class HomeController extends Controller
             $query->where('title', 'LIKE', "%{$keyword}%");
         }
 
-        $companies = $query->orderBy('created_at', 'desc')->get();
+        $companies = $query->with('people', 'projects')->orderBy('created_at', 'desc')->get();
 
         return view('home', compact('companies', 'keyword'));
     }

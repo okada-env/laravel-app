@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->string('contact_project')->nullable();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('company_id')->constrained();
             $table->timestamps();
         });
     }    

@@ -35,14 +35,6 @@ class CompanyController extends Controller
     
         return back()->with('message', '投稿を作成しました');
     }
-
-    public function index(Request $request)
-    {
-        $keyword = $request->input('keyword');
-        $user = auth()->user();
-        $companies = Company::all();
-        return view('home', ['companies' => $companies, 'keyword' => $keyword]);
-    }
     
     public function show(Company $company, Request $request)
     {
@@ -55,7 +47,7 @@ class CompanyController extends Controller
 
         $people = $peopleQuery->get();
         $projects = $company->projects()
-            ->with(['persons' => function($query) {
+            ->with(['people' => function($query) {
                 $query->withPivot('status_id');
             }])
             ->get();

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Person extends Model
 {
@@ -29,8 +29,13 @@ class Person extends Model
 
     public function projects()
     {
-        return $this->belongsToMany(Project::class, 'person_project')
+        return $this->belongsToMany(Project::class, 'company_project')
                     ->withPivot('status_id')
                     ->withTimestamps();
+    }
+
+    public function pivots()
+    {
+        return $this->hasMany(Pivot::class);
     }
 }
