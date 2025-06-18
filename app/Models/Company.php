@@ -26,7 +26,7 @@ class Company extends Model
 
     public function people()
     {
-        return $this->hasMany(\App\Models\Person::class, 'company_id');
+        return $this->hasMany(Person::class);
     }
 
     public function projects()
@@ -34,5 +34,10 @@ class Company extends Model
         return $this->belongsToMany(Project::class)
                     ->withPivot('status_id')
                     ->withTimestamps();
+    }
+
+    public function contact_person()
+    {
+        return $this->hasMany(Person::class);
     }
 }

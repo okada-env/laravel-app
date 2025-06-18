@@ -44,9 +44,4 @@ class Project extends Model
                     ->withPivot('status_id')
                     ->withTimestamps();
     }
-
-    public function pivots(): HasMany
-    {
-        return $this->hasMany(Pivot::class);
-    }
 }

@@ -18,16 +18,5 @@ class CompanyProject extends Pivot
     public function status()
     {
         return $this->belongsTo(Status::class, 'status_id');
-    }
-
-    public function person()
-    {
-        return $this->belongsTo(Person::class, 'person_id');
-    }
-
-    public function project()
-    {
-        return $this->belongsTo(Project::class, 'project_id');
-    }
-    
+    }    
 } 

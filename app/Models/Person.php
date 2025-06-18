@@ -34,8 +34,4 @@ class Person extends Model
                     ->withTimestamps();
     }
 
-    public function pivots()
-    {
-        return $this->hasMany(Pivot::class);
-    }
 }
