@@ -44,4 +44,15 @@ class Project extends Model
                     ->withPivot('status_id')
                     ->withTimestamps();
     }
+
+    public function scopeSearch($query, $filters = [])
+    {
+        if (!empty($filters['status_id'])) {
+            $query->whereHas('people', function($query) use ($filters) {
+                $query->where('status_id', $filters['status_id']);
+            });
+        }
+
+        return $query;
+    }
 }

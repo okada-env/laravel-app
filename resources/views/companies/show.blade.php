@@ -67,6 +67,17 @@
         </div>
 
         <h5 class="mt-4">案件一覧</h5>
+        <form method="GET" action="{{ route('companies.show', $company) }}" class="mb-3">
+            <select name="status_id" class="form-control d-inline-block w-auto mr-2">
+                <option value="">進捗検索</option>
+                @foreach($statuses as $id => $status)
+                    <option value="{{ $id }}" {{ request('status_id') == $id ? 'selected' : '' }}>
+                        {{ $status }}
+                    </option>
+                @endforeach
+            </select>
+            <button type="submit" class="btn btn-secondary btn-sm">検索</button>
+        </form>
         @if($projects && $projects->count() > 0)
             <ul class="list-group mb-4">
                 @foreach($projects as $project)

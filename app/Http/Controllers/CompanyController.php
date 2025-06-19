@@ -39,6 +39,8 @@ class CompanyController extends Controller
     public function show(Company $company, Request $request)
     {
         $person_keyword = $request->input('person_keyword');
+        $status_id = $request->input('status_id');
+        
         $peopleQuery = $company->people();
 
         if (!empty($person_keyword)) {
@@ -46,15 +48,21 @@ class CompanyController extends Controller
         }
 
         $people = $peopleQuery->get();
+        
+        $filters = [
+            'status_id' => $status_id
+        ];
+        
         $projects = $company->projects()
             ->with(['people' => function($query) {
                 $query->withPivot('status_id');
             }])
+            ->search($filters)
             ->get();
-
+        
         $statuses = Status::all()->pluck('status', 'id');
 
-        return view('companies.show', compact('company', 'people', 'projects', 'statuses'));
+        return view('companies.show', compact('company', 'people', 'projects', 'statuses', 'status_id'));
     }
     
     public function edit(Company $company)
